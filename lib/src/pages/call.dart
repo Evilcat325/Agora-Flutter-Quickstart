@@ -12,12 +12,10 @@ class CallPage extends StatefulWidget {
 }
 
 class _CallPageState extends State<CallPage> {
-  static final _users = <int>[];
   bool muted = false;
 
   @override
   void dispose() {
-    _users.clear();
     AgoraRtcEngine.leaveChannel();
     AgoraRtcEngine.destroy();
     super.dispose();
@@ -34,12 +32,6 @@ class _CallPageState extends State<CallPage> {
     /// Create agora sdk instance and initialize
     await AgoraRtcEngine.create(APP_ID);
     await AgoraRtcEngine.setChannelProfile(ChannelProfile.Communication);
-    // agora event handlers
-    AgoraRtcEngine.onUserJoined = (uid, _) => setState(() => _users.add(uid));
-    AgoraRtcEngine.onLeaveChannel = () => setState(() => _users.clear());
-    AgoraRtcEngine.onUserOffline =
-        (uid, _) => setState(() => _users.remove(uid));
-    // join the channel
     await AgoraRtcEngine.joinChannel(null, widget.channelName, null, 0);
   }
 
