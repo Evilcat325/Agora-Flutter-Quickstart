@@ -13,6 +13,12 @@ class IndexState extends State<IndexPage> {
   final _channelController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _channelController.addListener(() => setState(() {}));
+  }
+
+  @override
   void dispose() {
     _channelController.dispose();
     super.dispose();
@@ -63,7 +69,7 @@ class IndexState extends State<IndexPage> {
                     Expanded(
                       child: RaisedButton(
                         onPressed:
-                            _channelController.text.isNotEmpty ? onJoin : Null,
+                            _channelController.text.isNotEmpty ? onJoin : null,
                         child: Text('Join'),
                         color: Colors.blueAccent,
                         textColor: Colors.white,
