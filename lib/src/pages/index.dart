@@ -18,8 +18,6 @@ class IndexState extends State<IndexPage> {
   /// if channel textField is validated to have error
   bool _validateError = false;
 
-  ClientRole _role = ClientRole.Broadcaster;
-
   @override
   void dispose() {
     // dispose input controller
@@ -55,34 +53,6 @@ class IndexState extends State<IndexPage> {
                   ))
                 ],
               ),
-              Column(
-                children: [
-                  ListTile(
-                    title: Text(ClientRole.Broadcaster.toString()),
-                    leading: Radio(
-                      value: ClientRole.Broadcaster,
-                      groupValue: _role,
-                      onChanged: (ClientRole value) {
-                        setState(() {
-                          _role = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(ClientRole.Audience.toString()),
-                    leading: Radio(
-                      value: ClientRole.Audience,
-                      groupValue: _role,
-                      onChanged: (ClientRole value) {
-                        setState(() {
-                          _role = value;
-                        });
-                      },
-                    ),
-                  )
-                ],
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Row(
@@ -112,6 +82,7 @@ class IndexState extends State<IndexPage> {
           ? _validateError = true
           : _validateError = false;
     });
+
     if (_channelController.text.isNotEmpty) {
       // await for camera and mic permissions before pushing video page
       await _handleCameraAndMic();
@@ -121,7 +92,6 @@ class IndexState extends State<IndexPage> {
         MaterialPageRoute(
           builder: (context) => CallPage(
             channelName: _channelController.text,
-            role: _role,
           ),
         ),
       );
@@ -130,7 +100,7 @@ class IndexState extends State<IndexPage> {
 
   Future<void> _handleCameraAndMic() async {
     await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
+      [PermissionGroup.microphone],
     );
   }
 }
